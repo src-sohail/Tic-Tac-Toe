@@ -1,8 +1,9 @@
 import pygame, sys
 import numpy as np
-
+#initialize pygame
 pygame.init()
 
+#variables
 width= 600
 height= 600
 line_width= 10
@@ -19,12 +20,15 @@ space= 55
 player= 1
 game_over= False
 
+#display parameters
 screen= pygame.display.set_mode( (width,height) )
 pygame.display.set_caption( 'TIC_TAC_TOE ')
 screen.fill( crimson )
 
 board= np.zeros( (board_rows, board_cols))
 
+
+#draw circles and squares
 def draw_figures():
     for row in range(board_rows):
         for col in range(board_cols):
@@ -33,21 +37,29 @@ def draw_figures():
             elif board[row][col]== 2:
                 pygame.draw.line(screen, square_color, (col*200+space, row*200+200-space), (col*200+200-space, row*200+space), square_width)
                 pygame.draw.line(screen, square_color, (col*200+space, row*200+space), (col*200+200-space, row*200+200-space), square_width)
+#draw the board
 def line():
     pygame.draw.line( screen, line_color, (400,0), (400,600), line_width )
     pygame.draw.line( screen, line_color, (200,0), (200,600), line_width )
     pygame.draw.line( screen, line_color, (0,200), (600,200), line_width )
     pygame.draw.line( screen, line_color, (0,400), (600,400), line_width )
+
+
+line()
+#mark squares
 def mark_squares(rows,cols,player):
     board[rows][cols]= player
+#check if squares are available
 def available_square(row,col):
     return board[row][col]== 0
+#check if board is full
 def isboardfull():
     for row in range(board_rows):
         for col in range(board_cols):
             if board[row][col]== 0:
                 return False
     return True  
+#check win conditions
 def check_win(player):
     for col in range(board_cols):
         if board[0][col] == player and board[1][col] == player and board[2][col] == player:
@@ -63,6 +75,7 @@ def check_win(player):
     if board[0][0] == player and board[1][1] == player and board[2][2] == player:
         diagonal_desc_line(player)
         return True
+#the winning lines
 def vertical_win_line(col,player):
     X= col*200 + 100
     if player == 1:
@@ -89,6 +102,7 @@ def diagonal_desc_line(player):
     elif player == 2:
         color = square_color
     pygame.draw.line(screen, color, (15, 15), (width-15, height-15), 15)
+#press R to restart function
 def restart():
     screen.fill(crimson)
     line()
@@ -97,9 +111,7 @@ def restart():
         for col in range(board_cols):
             board[row][col] = 0
           
-
-line()
-
+#function body for tic tac toe operation
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
